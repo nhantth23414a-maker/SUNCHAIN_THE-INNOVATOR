@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>☀️ SunChain - Đầu tư Năng lượng Mặt Trời On-chain</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+
+        /* 1. Nền Gradient Năng lượng */
+        .gradient-bg-animate {
+            background: linear-gradient(-45deg, #FDB64A, #F97316, #EA580C, #F59E0B);
+            background-size: 400% 400%;
+            animation: gradientMove 12s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Tia sáng mặt trời xoay mượt */
+        .solar-rays {
+            position: absolute;
+            top: -50%;
+            left: -25%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg at 50% 50%,
+                rgba(255, 255, 255, 0) 0deg,
+                rgba(255, 255, 255, 0.1) 15deg,
+                rgba(255, 255, 255, 0) 30deg
+            );
+            animation: rotateRays 100s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+            transform-origin: center center;
+        }
+
+        @keyframes rotateRays {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Hào quang rực rỡ */
+        .sun-glow {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(253,182,74,0.08) 40%, rgba(249,115,22,0) 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            animation: pulseGlow 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        /* Dòng chảy năng lượng mờ ảo */
+        .energy-path {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* Nút chuyển đổi ngôn ngữ nghệ thuật */
+        .lang-switch {
+            position: relative;
+            display: flex;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 4px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .lang-slider {
+            position: absolute;
+            height: calc(100% - 8px);
+            width: calc(50% - 4px);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 0;
+        }
+
+        .lang-active-en { transform: translateX(100%); }
+
+        .lang-item {
+            position: relative;
+            z-index: 1;
+            padding: 6px 14px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #F97316, #EA580C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px rgba(249, 115, 22, 0.15); }
+
+        .progress-bar { transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #FFF;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-up { animation: fadeInUp 1s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
+        .delay-1 { animation-delay: 0.2s; opacity: 0; }
+        .delay-2 { animation-delay: 0.4s; opacity: 0; }
+
+        .yield-number { font-variant-numeric: tabular-nums; }
+
+        /* Hạt photon lung linh */
+        .particle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            animation: floatParticle 10s ease-in infinite;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(0) scale(0); opacity: 0; }
+            20% { opacity: 0.6; }
+            100% { transform: translateY(-120vh) translateX(80px) scale(1.5); opacity: 0; }
+        }
+
+        /* Parallax layers */
+        .parallax-layer {
+            transition: transform 0.2s cubic-bezier(0.1, 0, 0, 1);
+            will-change: transform;
+        }
+
+        .hero-content-glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 3rem;
+            padding: 3.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Chữ phản quang rực rỡ */
+        .shimmer-text {
+            background: linear-gradient(120deg, rgba(255,255,255,0) 20%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 80%);
+            background-size: 200% 100%;
+            animation: shimmer 4s infinite linear;
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Navigation Menu Styles */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 12px;
+        }
+
+        .nav-link:hover {
+            background: rgba(249, 115, 22, 0.1);
+            color: #F97316;
+        }
+
+        .nav-link.active {
+            background: rgba(249, 115, 22, 0.15);
+            color: #F97316;
+            font-weight: 800;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #F97316, transparent);
+            border-radius: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link.active::after {
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        /* Section spacing to prevent overlap */
+        section {
+            scroll-margin-top: 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 140;
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Global Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .loading-sun {
+            font-size: 4rem;
+            animation: rotateSun 3s linear infinite;
+        }
+
+        @keyframes rotateSun {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-orange-50 via-white to-orange-50 overflow-x-hidden">
+
+    <!-- Global Loading Overlay -->
+    <div id="globalLoading" class="loading-overlay">
+        <div class="loading-sun mb-4">☀️</div>
+        <p id="loading-text" class="text-orange-600 font-black text-xs uppercase tracking-widest animate-pulse">Đang xử lý giao dịch...</p>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenuOverlay" class="mobile-menu-overlay"></div>
+
+    <!-- HEADER -->
+    <nav class="glass sticky top-0 z-[100] border-b border-orange-100 shadow-sm">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center text-xl shadow-lg">☀️</div>
+                    <div class="hidden sm:block">
+                        <h1 class="text-xl font-black gradient-text tracking-tighter">SunChain</h1>
+                        <p id="nav-subtitle" class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Năng lượng xanh Token hóa</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center gap-2">
+                    <a href="#home" class="nav-link active" id="nav-home">Trang chủ</a>
+                    <a href="#projects" class="nav-link" id="nav-projects">Dự án</a>
+                    <a href="#companies" class="nav-link" id="nav-companies">Công ty</a>
+                    <a href="#history" class="nav-link" id="nav-history">Lịch sử</a>
+                    <a href="#aboutSection" class="nav-link" id="nav-about">Về chúng tôi</a>
+                </div>
+
+                <div class="flex items-center gap-4 sm:gap-6">
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="lg:hidden p-2 hover:bg-orange-50 rounded-lg transition">
+                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+
+                    <!-- Nút chuyển đổi ngôn ngữ -->
+                    <div class="flex items-center gap-2">
+                        <div class="lang-switch">
+                            <div id="langSlider" class="lang-slider"></div>
+                            <div onclick="changeLang('vi')" id="lang-vi" class="lang-item text-orange-600">VN</div>
+                            <div onclick="changeLang('en')" id="lang-en" class="lang-item text-gray-400">EN</div>
+                        </div>
+                    </div>
+
+                    <div class="hidden sm:flex items-center gap-3">
+                        <div id="kycStatus" class="hidden badge bg-green-50 text-green-600 border border-green-100 animate-fade-in">✓ Verified</div>
+                        <button id="connectWallet" class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:shadow-lg transition flex items-center gap-2 border border-transparent shadow-orange-100">
+                            <span>🔗</span>
+                            <span id="connectWalletText">Kết nối ví</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-80 h-full bg-white shadow-2xl z-[150]">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-xl font-black gradient-text">Menu</h3>
+                <button id="closeMobileMenu" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            <div class="flex flex-col gap-4">
+                <a href="#home" class="mobile-nav-link text-lg font-bold py-3 px-4 rounded-xl hover:bg-orange-50" id="mobile-nav-home">Trang chủ</a>
+                <a href="#projects" class="mobile-nav-link text-lg font-bold py-3 px-4 rounded-xl hover:bg-orange-50" id="mobile-nav-projects">Dự án</a>
+                <a href="#companies" class="mobile-nav-link text-lg font-bold py-3 px-4 rounded-xl hover:bg-orange-50" id="mobile-nav-companies">Công ty</a>
+                <a href="#history" class="mobile-nav-link text-lg font-bold py-3 px-4 rounded-xl hover:bg-orange-50" id="mobile-nav-history">Lịch sử</a>
+                <a href="#aboutSection" class="mobile-nav-link text-lg font-bold py-3 px-4 rounded-xl hover:bg-orange-50" id="mobile-nav-about">Về chúng tôi</a>
+                <hr class="my-4">
+                <button onclick="openKYCModal()" class="text-left text-lg font-bold py-3 px-4 rounded-xl hover:bg-orange-50" id="mobile-kyc-btn">🎫 Xác thực KYC</button>
+                <button id="connectWalletMobile" class="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2">
+                    <span>🔗</span>
+                    <span id="connectWalletTextMobile">Kết nối ví</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ENHANCED PARALLAX HERO SECTION -->
+    <div id="home" class="gradient-bg-animate text-white py-32 sm:py-52 relative overflow-hidden">
+        <!-- Parallax Background Elements -->
+        <div class="parallax-layer solar-rays" data-speed="0.02"></div>
+        <div class="parallax-layer sun-glow -top-40 -right-40" data-speed="0.05"></div>
+        <div class="parallax-layer sun-glow -bottom-60 -left-40" style="animation-delay: -2.5s;" data-speed="0.04"></div>
+
+        <!-- Energy Flow SVG -->
+        <svg class="energy-path" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+            <path d="M0,500 C200,400 400,600 600,500 C800,400 1000,600 1000,500" stroke="white" stroke-width="2" fill="none">
+                <animate attributeName="d" dur="10s" repeatCount="indefinite" values="M0,500 C200,400 400,600 600,500 C800,400 1000,600 1000,500; M0,500 C200,600 400,400 600,500 C800,600 1000,400 1000,500; M0,500 C200,400 400,600 600,500 C800,400 1000,600 1000,500" />
+            </path>
+        </svg>
+
+        <div id="particles" class="absolute inset-0 z-0"></div>
+
+        <div class="container mx-auto px-4 text-center relative z-10 parallax-layer" data-speed="0.1">
+            <div class="max-w-4xl mx-auto">
+                <div class="animate-up">
+                    <span id="hero-tag" class="inline-block px-5 py-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full text-[10px] font-black mb-10 tracking-[0.25em] uppercase">
+                        ⚡ FUTURE ENERGY • BLOCKCHAIN TECHNOLOGY
+                    </span>
+                </div>
+
+                <div class="hero-content-glass animate-up delay-1">
+                    <!-- Network Status Badge -->
+                    <div class="absolute top-6 right-8 flex items-center gap-2">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-ping"></span>
+                        <span class="text-[9px] font-black text-white/50 uppercase tracking-[0.2em]">Sepolia Live</span>
+                    </div>
+
+                    <h1 id="hero-title" class="text-6xl md:text-8xl font-[900] mb-8 leading-[1.1] tracking-tighter drop-shadow-2xl">
+                        Đầu tư <span class="text-yellow-300 shimmer-text">Nắng</span><br/>
+                        Gặt hái <span class="text-white">Lợi nhuận</span>
+                    </h1>
+                    <p id="hero-desc" class="text-lg md:text-xl mb-12 text-orange-50 max-w-2xl mx-auto font-medium leading-relaxed opacity-90">
+                        SunChain biến ánh nắng mặt trời thành tài sản số. Đầu tư vào các dự án Solar Farm lớn nhất Việt Nam chỉ với vài click.
+                    </p>
+
+                    <!-- Live Data Ticker inside Hero -->
+                    <div class="grid grid-cols-3 gap-4 mb-10 py-6 border-y border-white/10">
+                        <div class="text-center">
+                            <p id="live-solar-label" class="text-[9px] font-black text-yellow-300 uppercase tracking-widest mb-1">Cường độ nắng</p>
+                            <p class="text-xl font-black text-white tracking-tighter"><span id="live-solar-power">842</span> <span class="text-[10px] opacity-60">W/m²</span></p>
+                        </div>
+                        <div class="text-center border-x border-white/10">
+                            <p id="live-co2-label" class="text-[9px] font-black text-yellow-300 uppercase tracking-widest mb-1">Giảm thiểu CO2</p>
+                            <p class="text-xl font-black text-white tracking-tighter">+<span id="live-co2-saved">1,420</span> <span class="text-[10px] opacity-60">Tấn</span></p>
+                        </div>
+                        <div class="text-center">
+                            <p id="live-price-label" class="text-[9px] font-black text-yellow-300 uppercase tracking-widest mb-1">Giá SOLAR</p>
+                            <p class="text-xl font-black text-white tracking-tighter">$0.85 <span class="text-[10px] text-green-400">▲ 2.4%</span></p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <a href="#projects" id="hero-btn-start" class="bg-white text-orange-600 px-12 py-5 rounded-2xl font-black text-lg hover:bg-orange-50 transition shadow-[0_20px_60px_rgba(255,255,255,0.25)] scale-105 active:scale-95">🚀 Bắt đầu ngay</a>
+                        <button onclick="openKYCModal()" id="hero-btn-kyc" class="bg-white/10 backdrop-blur-md text-white border-2 border-white/30 px-12 py-5 rounded-2xl font-bold hover:bg-white/20 transition">🎫 Xác thực KYC</button>
+                    </div>
+                </div>
+
+                <div class="mt-16 flex flex-wrap justify-center gap-10 text-[11px] font-black tracking-widest uppercase opacity-70 animate-up delay-2">
+                    <div class="flex items-center gap-2"><span>🛡️</span> <span id="feature-1-text">Bảo mật On-chain</span></div>
+                    <div class="flex items-center gap-2"><span>📈</span> <span id="feature-2-text">ROI ổn định</span></div>
+                    <div class="flex items-center gap-2"><span>🌿</span> <span id="feature-3-text">100% Năng lượng xanh</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PORTFOLIO DASHBOARD -->
+    <section id="portfolioDashboard" class="hidden container mx-auto px-4 py-12 animate-up">
+        <div class="bg-gray-900 rounded-[3.5rem] p-10 sm:p-14 text-white shadow-2xl relative overflow-hidden border-4 border-orange-500/10">
+            <div class="absolute top-0 right-0 p-10 opacity-10 text-[12rem] pointer-events-none">⚡</div>
+            <div class="relative z-10 grid md:grid-cols-3 gap-12 text-center md:text-left">
+                <div>
+                    <h3 id="dash-yield-title" class="text-orange-400 font-black uppercase tracking-widest text-[10px] mb-4">Lợi nhuận tích lũy (Live)</h3>
+                    <div class="flex items-baseline justify-center md:justify-start gap-2">
+                        <span id="liveYield" class="text-6xl font-black yield-number text-yellow-400">0.000000</span>
+                        <span class="text-xl font-bold text-gray-500">USDT</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 id="dash-token-title" class="text-orange-400 font-black uppercase tracking-widest text-[10px] mb-4">Tổng Token SOLAR sở hữu</h3>
+                    <div class="flex items-baseline justify-center md:justify-start gap-2">
+                        <span id="totalSolarTokens" class="text-4xl font-black">0.00</span>
+                        <span class="text-xl font-bold text-gray-500">SOLAR</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 id="dash-status-title" class="text-orange-400 font-black uppercase tracking-widest text-[10px] mb-4">Trạng thái nhà máy</h3>
+                    <div class="flex items-center justify-center md:justify-start gap-4">
+                        <div class="flex items-center gap-2 px-5 py-2.5 bg-green-500/10 text-green-400 rounded-2xl border border-green-500/20">
+                            <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span>
+                            <span id="factory-status" class="text-xs font-black uppercase tracking-tighter">Đang phát điện</span>
+                        </div>
+                        <div class="text-xs text-gray-500 font-black">
+                            <span id="factory-eff-label">Hiệu suất:</span> <span class="text-white">98.5%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS OVERVIEW -->
+    <div class="container mx-auto px-4 mt-12 mb-20">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="glass rounded-[2.5rem] shadow-xl p-8 text-center border border-white card">
+                <div class="text-4xl mb-3">👥</div>
+                <div id="statInvestors" class="text-3xl font-black text-orange-600 tracking-tighter">2,458</div>
+                <div id="stat-investors-label" class="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-2">Nhà đầu tư</div>
+            </div>
+            <div class="glass rounded-[2.5rem] shadow-xl p-8 text-center border border-white card">
+                <div class="text-4xl mb-3">⚡</div>
+                <div class="text-3xl font-black text-green-600 tracking-tighter">15.5 MW</div>
+                <div id="stat-capacity-label" class="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-2">Tổng công suất</div>
+            </div>
+            <div class="glass rounded-[2.5rem] shadow-xl p-8 text-center border border-white card">
+                <div class="text-4xl mb-3">💰</div>
+                <div id="statTotalRaised" class="text-3xl font-black text-blue-600 tracking-tighter">542k</div>
+                <div id="stat-raised-label" class="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-2">USDT Đã gọi</div>
+            </div>
+            <div class="glass rounded-[2.5rem] shadow-xl p-8 text-center border border-white card">
+                <div class="text-4xl mb-3">💎</div>
+                <div class="text-3xl font-black text-yellow-600 tracking-tighter">19.2%</div>
+                <div id="stat-roi-label" class="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-2">ROI Trung bình</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROJECTS SECTION -->
+    <section id="projects" class="container mx-auto px-4 py-10">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
+            <h2 id="projects-title" class="text-4xl font-[900] text-gray-800 tracking-tighter">Dự án Đang Gọi Vốn</h2>
+            <div class="h-1 flex-1 bg-orange-100/50 rounded-full mx-6 hidden md:block"></div>
+            <p id="projects-subtitle" class="text-gray-400 font-black text-xs tracking-widest uppercase">Solar Pipeline</p>
+        </div>
+        <div id="projectsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- Render via JS -->
+        </div>
+    </section>
+
+    <!-- COMPANIES STATUS SECTION -->
+    <section id="companies" class="container mx-auto px-4 py-20">
+        <div class="text-center mb-16">
+            <h2 id="companies-title" class="text-4xl md:text-5xl font-[900] text-gray-800 tracking-tighter mb-4">Tình trạng Công ty Đầu tư</h2>
+            <p id="companies-subtitle" class="text-gray-500 text-lg font-medium">Các doanh nghiệp lớn đã tin tưởng và hợp tác với SunChain</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Company Cards -->
+            <div class="glass rounded-[2.5rem] p-8 border border-orange-50 card">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg">🌵</div>
+                    <div>
+                        <h3 id="company-1-name" class="text-xl font-black text-gray-800">Phong Phú Corp</h3>
+                        <p id="company-1-type" class="text-xs text-gray-400 font-bold">Textile Manufacturing</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span id="company-status-label" class="text-sm text-gray-500 font-bold">Trạng thái:</span>
+                        <span class="badge bg-green-50 text-green-600 border border-green-100">✓ <span id="company-1-status">Đang hoạt động</span></span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span id="company-project-label" class="text-sm text-gray-500 font-bold">Dự án:</span>
+                        <span class="text-sm font-black text-orange-600">1 Solar Farm</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span id="company-invest-label" class="text-sm text-gray-500 font-bold">Tổng đầu tư:</span>
+                        <span class="text-sm font-black text-gray-800">38,500 USDT</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span id="company-co2-label" class="text-sm text-gray-500 font-bold">Tiết kiệm CO₂:</span>
+                        <span class="text-sm font-black text-green-600">1,240 <span id="company-co2-unit">tấn/năm</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass rounded-[2.5rem] p-8 border border-orange-50 card">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg">🍺</div>
+                    <div>
+                        <h3 class="text-xl font-black text-gray-800">Sabeco Group</h3>
+                        <p class="text-xs text-gray-400 font-bold">Beverage Industry</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-500 font-bold">Trạng thái:</span>
+                        <span class="badge bg-green-50 text-green-600 border border-green-100">✓ Đang hoạt động</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-500 font-bold">Dự án:</span>
+                        <span class="text-sm font-black text-orange-600">1 Rooftop Solar</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-500 font-bold">Tổng đầu tư:</span>
+                        <span class="text-sm font-black text-gray-800">31,200 USDT</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-500 font-bold">Tiết kiệm CO₂:</span>
+                        <span class="text-sm font-black text-green-600">980 tấn/năm</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass rounded-[2.5rem] p-8 border border-orange-50 card">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg">🥛</div>
+                    <div>
+                        <h3 class="text-xl font-black text-gray-800">TH Group</h3>
+                        <p class="text-xs text-gray-400 font-bold">Dairy Products</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-500 font-bold">Trạng thái:</span>
+                        <span class="badge bg-green-50 text-green-600 border border-green-100">✓ Đang hoạt động</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-500 font-bold">Dự án:</span>
+                        <span class="text-sm font-black text-orange-600">1 Eco-Farm Solar</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-500 font-bold">Tổng đầu tư:</span>
+                        <span class="text-sm font-black text-gray-800">27,000 USDT</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-500 font-bold">Tiết kiệm CO₂:</span>
+                        <span class="text-sm font-black text-green-600">845 tấn/năm</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRANSACTION HISTORY -->
+    <section id="history" class="container mx-auto px-4 py-20">
+        <div class="bg-white rounded-[3rem] p-10 sm:p-14 shadow-sm border border-orange-50">
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-12 gap-4 text-center sm:text-left">
+                <h2 id="history-title" class="text-3xl font-black tracking-tighter">Lịch sử Giao dịch</h2>
+                <span id="history-badge" class="px-5 py-2 bg-orange-50 rounded-2xl text-[10px] font-black text-orange-500 uppercase tracking-widest">Xác thực bởi Blockchain</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-[10px] text-gray-400 font-black uppercase tracking-widest border-b border-gray-50">
+                            <th id="th-time" class="pb-8 px-4">Thời gian</th>
+                            <th id="th-project" class="pb-8 px-4">Dự án</th>
+                            <th id="th-amount" class="pb-8 px-4">Đầu tư (USDT)</th>
+                            <th id="th-token" class="pb-8 px-4">SOLAR Token</th>
+                            <th id="th-tx" class="pb-8 px-4">Mã giao dịch (TX)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionHistory">
+                        <tr><td colspan="5" class="py-14 text-center text-gray-300 font-black uppercase tracking-[0.2em] italic text-[10px] opacity-60" id="history-empty">Chưa có giao dịch đầu tư nào được ghi nhận trên Blockchain.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT US SECTION - UPDATED WITH REQUESTED IMAGE -->
+    <section id="aboutSection" class="container mx-auto px-4 py-24 animate-up">
+        <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-[3rem] p-10 sm:p-20 text-white shadow-2xl relative overflow-hidden">
+            <div class="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-white/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-[-10%] left-[-5%] w-[30%] h-[30%] bg-black/10 rounded-full blur-3xl"></div>
+
+            <div class="relative z-10 max-w-5xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center gap-16">
+                    <div class="md:w-1/2">
+                        <h2 id="about-title" class="text-4xl md:text-6xl font-black mb-8 tracking-tighter leading-tight">Về SunChain</h2>
+                        <p id="about-desc" class="text-lg md:text-xl text-orange-50 font-medium leading-relaxed opacity-90 mb-10">
+                            SunChain là nền tảng tiên phong tại Việt Nam áp dụng công nghệ Blockchain để minh bạch hóa và tối ưu hóa việc đầu tư vào năng lượng tái tạo. Chúng tôi kết nối các nhà đầu tư với các dự án điện mặt trời thực tế, mang lại giá trị bền vững cho cộng đồng và môi trường.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="bg-white/10 backdrop-blur-xl p-6 rounded-2xl border border-white/20">
+                                <h3 id="about-mission-title" class="font-black text-yellow-300 text-sm uppercase tracking-widest mb-2">Sứ mệnh</h3>
+                                <p id="about-mission-desc" class="text-sm font-medium opacity-80 leading-relaxed">Phổ cập việc đầu tư năng lượng sạch cho tất cả mọi người thông qua số hóa tài sản.</p>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-xl p-6 rounded-2xl border border-white/20">
+                                <h3 id="about-vision-title" class="font-black text-yellow-300 text-sm uppercase tracking-widest mb-2">Tầm nhìn</h3>
+                                <p id="about-vision-desc" class="text-sm font-medium opacity-80 leading-relaxed">Trở thành nền tảng quản lý tài sản năng lượng on-chain lớn nhất Đông Nam Á vào năm 2030.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Updated with the earth-ball image as requested -->
+                    <div class="md:w-1/2 flex justify-center">
+                        <div class="w-full max-w-sm aspect-square glass rounded-[3rem] overflow-hidden flex items-center justify-center shadow-2xl relative border-4 border-white/20">
+                            <img src="https://img.freepik.com/free-psd/earth-ball-school-education_23-2151848237.jpg"
+                                 alt="SunChain Global"
+                                 class="w-full h-full object-cover">
+                            <div class="absolute -top-4 -right-4 w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-2xl shadow-xl">🛡️</div>
+                            <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center text-2xl shadow-xl">🌿</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INVEST MODAL -->
+    <div id="investModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-[100] p-4">
+        <div class="bg-white rounded-[3rem] p-10 sm:p-12 max-w-lg w-full shadow-2xl relative animate-up">
+            <button onclick="closeInvestModal()" class="absolute top-8 right-10 text-gray-300 hover:text-gray-600 text-4xl">&times;</button>
+            <h3 id="modal-title" class="text-3xl font-black mb-8 gradient-text tracking-tighter">Đầu Tư Dự Án</h3>
+            <div id="modalProjectCard" class="mb-10 p-8 bg-orange-50 rounded-[2rem] border border-orange-100/50"></div>
+            <div class="mb-10">
+                <label id="modal-amount-label" class="block text-gray-500 font-black text-xs uppercase tracking-widest mb-4">Số tiền đầu tư (USDT)</label>
+                <div class="relative">
+                    <input type="number" id="investAmount" class="w-full px-8 py-6 bg-gray-50 border-2 border-gray-100 rounded-[2rem] focus:border-orange-500 focus:outline-none text-3xl font-black tracking-tighter" value="100">
+                    <span class="absolute right-10 top-1/2 -translate-y-1/2 font-black text-gray-300">USDT</span>
+                </div>
+            </div>
+            <div class="grid gap-4">
+                <button id="approveBtn" class="w-full bg-yellow-500 text-white py-6 rounded-[2rem] font-black hover:bg-yellow-600 transition shadow-xl shadow-yellow-100">1️⃣ Duyệt (Approve) USDT</button>
+                <button id="investBtn" class="w-full bg-orange-600 text-white py-6 rounded-[2rem] font-black hover:bg-orange-700 transition shadow-xl shadow-orange-100 disabled:bg-gray-200" disabled>2️⃣ Xác nhận Đầu tư</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- KYC MODAL -->
+    <div id="kycModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-[100] p-4">
+        <div class="bg-white rounded-[3rem] p-10 sm:p-12 max-w-md w-full shadow-2xl animate-up">
+            <div class="flex justify-between items-center mb-10">
+                <h3 id="kyc-modal-title" class="text-2xl font-black gradient-text tracking-tighter">🎫 Xác thực KYC</h3>
+                <button onclick="closeKYCModal()" class="text-gray-300 hover:text-gray-600 text-3xl">&times;</button>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <label id="kyc-name-label" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Họ và tên</label>
+                    <input type="text" id="kycName" class="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-orange-500 font-bold" placeholder="NGUYEN VAN A">
+                </div>
+                <div>
+                    <label id="kyc-id-label" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Số CCCD/ID</label>
+                    <input type="text" id="kycID" class="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-orange-500 font-bold" placeholder="001234xxxxxx">
+                </div>
+                <button id="submitKYC" class="w-full bg-gray-900 text-white py-5 rounded-2xl font-black hover:bg-orange-600 transition mt-6">Gửi Xác Thực</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div id="notification" class="hidden fixed top-24 right-6 px-8 py-5 rounded-3xl text-white font-black text-sm shadow-2xl z-[200] animate-bounce"></div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-orange-100 py-20 text-center">
+        <div class="container mx-auto px-4">
+            <div class="w-16 h-16 bg-orange-100 text-orange-600 rounded-[1.5rem] flex items-center justify-center text-3xl mx-auto mb-8 shadow-inner">☀️</div>
+            <p class="text-gray-400 font-black text-xs uppercase tracking-[0.3em] mb-4">SunChain Platform</p>
+            <p id="footer-desc" class="text-gray-500 text-base max-w-lg mx-auto leading-relaxed mb-16">Nền tảng Token hóa năng lượng mặt trời hàng đầu Đông Nam Á, mang ánh nắng đến ví của bạn.</p>
+            <div id="footer-copyright" class="pt-12 border-t border-gray-50 text-[10px] text-gray-400 font-black uppercase tracking-widest">
+                © 2026 SunChain Platform. Xây dựng trên nền tảng Blockchain Ethereum (Sepolia).
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- TRANSLATIONS ---
+        const i18n = {
+            vi: {
+                navSubtitle: "Năng lượng xanh Token hóa",
+                connectWallet: "Kết nối ví",
+                heroTag: "⚡ NĂNG LƯỢNG TƯƠNG LAI • CÔNG NGHỆ HIỆN TẠI",
+                heroTitle: "Đầu tư <span class='text-yellow-300 shimmer-text'>Nắng</span><br/>Gặt hái <span class='text-white'>Lợi nhuận</span>",
+                heroDesc: "SunChain biến ánh nắng mặt trời thành tài sản số. Đầu tư vào các dự án Solar Farm lớn nhất Việt Nam chỉ với vài click.",
+                heroBtnStart: "🚀 Bắt đầu ngay",
+                heroBtnKYC: "🎫 Xác thực KYC",
+                liveSolar: "Cường độ nắng",
+                liveCO2: "Giảm thiểu CO2",
+                solarPrice: "Giá SOLAR",
+                feature1: "Bảo mật On-chain",
+                feature2: "ROI ổn định",
+                feature3: "100% Năng lượng xanh",
+                dashYield: "Lợi nhuận tích lũy (Live)",
+                dashToken: "Tổng Token SOLAR sở hữu",
+                dashStatus: "Trạng thái nhà máy",
+                factoryActive: "Đang phát điện",
+                factoryEff: "Hiệu suất:",
+                statInvestors: "Nhà đầu tư",
+                statCapacity: "Tổng công suất",
+                statRaised: "USDT Đã gọi",
+                statROI: "ROI Trung bình",
+                projectsTitle: "Dự án Đang Gọi Vốn",
+                projectsSubtitle: "Danh sách Dự án",
+                investNow: "ĐẦU TƯ NGAY ⚡",
+                raisedLabel: "Giai đoạn gọi vốn",
+                completedLabel: "HOÀN THÀNH",
+                targetLabel: "MỤC TIÊU",
+                locationLabel: "Địa điểm",
+                companiesTitle: "Tình trạng Công ty Đầu tư",
+                companiesSubtitle: "Các doanh nghiệp lớn đã tin tưởng và hợp tác với SunChain",
+                companyStatusLabel: "Trạng thái:",
+                companyProjectLabel: "Dự án:",
+                companyInvestLabel: "Tổng đầu tư:",
+                companyCO2Label: "Tiết kiệm CO₂:",
+                companyStatus: "Đang hoạt động",
+                companyCO2Unit: "tấn/năm",
+                historyTitle: "Lịch sử Giao dịch",
+                historyBadge: "Xác thực bởi Blockchain",
+                thTime: "Thời gian",
+                thProject: "Dự án",
+                thAmount: "Đầu tư (USDT)",
+                thToken: "SOLAR Token",
+                thTx: "Mã giao dịch (TX)",
+                aboutTitle: "Về SunChain",
+                aboutDesc: "SunChain là nền tảng tiên phong tại Việt Nam áp dụng công nghệ Blockchain để minh bạch hóa và tối ưu hóa việc đầu tư vào năng lượng tái tạo. Chúng tôi kết nối các nhà đầu tư với các dự án điện mặt trời thực tế, mang lại giá trị bền vững cho cộng đồng và môi trường.",
+                aboutMissionTitle: "Sứ mệnh",
+                aboutMissionDesc: "Phổ cập việc đầu tư năng lượng sạch cho tất cả mọi người thông qua số hóa tài sản.",
+                aboutVisionTitle: "Tầm nhìn",
+                aboutVisionDesc: "Trở thành nền tảng quản lý tài sản năng lượng on-chain lớn nhất Đông Nam Á vào năm 2030.",
+                modalTitle: "Đầu Tư Dự Án",
+                modalAmount: "Số tiền đầu tư (USDT)",
+                approveBtn: "1️⃣ Duyệt (Approve) USDT",
+                approvedState: "✅ ĐÃ DUYỆT",
+                investBtn: "2️⃣ Xác nhận Đầu tư",
+                kycModalTitle: "🎫 Xác thực KYC",
+                kycName: "Họ và tên",
+                kycID: "Số CCCD/ID",
+                kycSubmit: "Gửi Xác Thực",
+                footerDesc: "Nền tảng Token hóa năng lượng mặt trời hàng đầu Đông Nam Á, mang ánh nắng đến ví của bạn.",
+                footerCopy: "© 2026 SunChain Platform. Xây dựng trên nền tảng Blockchain Ethereum (Sepolia).",
+                notifConnect: "Ví đã kết nối thành công!",
+                notifApprove: "Approve thành công!",
+                notifInvest: "Đầu tư thành công +{amount} USDT!",
+                notifKYC: "KYC đã được duyệt on-chain!",
+                notifFail: "Giao dịch thất bại!",
+                historyEmpty: "Chưa có giao dịch đầu tư nào được ghi nhận trên Blockchain.",
+                roiTarget: "ROI Mục tiêu:",
+                navHome: "Trang chủ",
+                navProjects: "Dự án",
+                navCompanies: "Công ty",
+                navHistory: "Lịch sử",
+                navAbout: "Về chúng tôi",
+                loadingTx: "Đang xử lý giao dịch...",
+                loadingVerify: "Đang xác thực thông tin..."
+            },
+            en: {
+                navSubtitle: "Solar Energy Tokenization",
+                connectWallet: "Connect Wallet",
+                heroTag: "⚡ FUTURE ENERGY • CURRENT TECHNOLOGY",
+                heroTitle: "Invest in <span class='text-yellow-300 shimmer-text'>Sun</span><br/>Harvest <span class='text-white'>Profit</span>",
+                heroDesc: "SunChain turns sunlight into digital assets. Invest in Vietnam's largest Solar Farm projects with just a few clicks.",
+                heroBtnStart: "🚀 Get Started",
+                heroBtnKYC: "🎫 Verify KYC",
+                liveSolar: "Solar Intensity",
+                liveCO2: "CO2 Reduction",
+                solarPrice: "SOLAR Price",
+                feature1: "On-chain Security",
+                feature2: "Stable ROI",
+                feature3: "100% Green Energy",
+                dashYield: "Accumulated Yield (Live)",
+                dashToken: "Total SOLAR Tokens",
+                dashStatus: "Factory Status",
+                factoryActive: "Generating Power",
+                factoryEff: "Efficiency:",
+                statInvestors: "Investors",
+                statCapacity: "Total Capacity",
+                statRaised: "Total Raised (USDT)",
+                statROI: "Average ROI",
+                projectsTitle: "Active Funding Projects",
+                projectsSubtitle: "Solar Pipeline",
+                investNow: "INVEST NOW ⚡",
+                raisedLabel: "Funding Phase",
+                completedLabel: "COMPLETED",
+                targetLabel: "TARGET",
+                locationLabel: "Location",
+                companiesTitle: "Partner Companies Status",
+                companiesSubtitle: "Leading enterprises trusting and partnering with SunChain",
+                companyStatusLabel: "Status:",
+                companyProjectLabel: "Projects:",
+                companyInvestLabel: "Total Investment:",
+                companyCO2Label: "CO₂ Savings:",
+                companyStatus: "Active",
+                companyCO2Unit: "tons/year",
+                historyTitle: "Transaction History",
+                historyBadge: "Blockchain Verified",
+                thTime: "Timestamp",
+                thProject: "Project",
+                thAmount: "Invested (USDT)",
+                thToken: "SOLAR Tokens",
+                thTx: "TX Hash",
+                aboutTitle: "About SunChain",
+                aboutDesc: "SunChain is Vietnam's leading platform applying Blockchain to transparentize and optimize renewable energy investment. We connect investors with real solar projects, bringing sustainable value to communities and the environment.",
+                aboutMissionTitle: "Mission",
+                aboutMissionDesc: "Democratize clean energy investment for everyone through asset digitalization.",
+                aboutVisionTitle: "Vision",
+                aboutVisionDesc: "Become Southeast Asia's largest on-chain energy asset management platform by 2030.",
+                modalTitle: "Invest in Project",
+                modalAmount: "Investment Amount (USDT)",
+                approveBtn: "1️⃣ Approve USDT",
+                approvedState: "✅ APPROVED",
+                investBtn: "2️⃣ Confirm Investment",
+                kycModalTitle: "🎫 KYC Verification",
+                kycName: "Full Name",
+                kycID: "ID Number",
+                kycSubmit: "Submit Verification",
+                footerDesc: "Leading solar energy tokenization platform in SE Asia, bringing sunlight to your wallet.",
+                footerCopy: "© 2026 SunChain Platform. Built on Ethereum Blockchain (Sepolia).",
+                notifConnect: "Wallet connected successfully!",
+                notifApprove: "Approval successful!",
+                notifInvest: "Investment successful +{amount} USDT!",
+                notifKYC: "KYC approved on-chain!",
+                notifFail: "Transaction failed!",
+                historyEmpty: "No investment transactions found on Blockchain.",
+                roiTarget: "Target ROI:",
+                navHome: "Home",
+                navProjects: "Projects",
+                navCompanies: "Companies",
+                navHistory: "History",
+                navAbout: "About Us",
+                loadingTx: "Processing transaction...",
+                loadingVerify: "Verifying information..."
+            }
+        };
+
+        let currentLang = 'vi';
+
+        const CONFIG = {
+            chainId: 11155111,
+            contracts: {
+                usdt: '0xF81C9ED5A3635A0D9178845f39D92e40825E7EfE',
+                investment: '0xe122315A4A05b87ad62Ab0a0c6170a9FAA672909'
+            },
+            explorer: 'https://sepolia.etherscan.io'
+        };
+
+        const ERC20_ABI = ["function approve(address spender, uint256 amount) returns (bool)"];
+        const INVESTMENT_ABI = ["function invest(uint256 projectId, uint256 usdtAmount)", "function kycApproved(address investor) view returns (bool)", "function approveKYC(address investor)"];
+
+        let PROJECTS = [
+            {
+                id: 1,
+                name_vi: "Solar Farm Phong Phú",
+                name_en: "Phong Phu Solar Farm",
+                company_vi: "Phong Phú Corp",
+                company_en: "Phong Phu Corporation",
+                logo: "🌵",
+                location_vi: "Ninh Thuận",
+                location_en: "Ninh Thuan",
+                target: 50000,
+                raised: 38500,
+                investors: 412,
+                roi: 22.5,
+                status: "active",
+                image: "https://imagevietnam.vnanet.vn//MediaUpload/Org/2023/03/20/kim-phuong-420-11-24-38.jpg"
+            },
+            {
+                id: 2,
+                name_vi: "Bia Sài Gòn Rooftop",
+                name_en: "Sabeco Solar Rooftop",
+                company_vi: "Sabeco",
+                company_en: "Sabeco Group",
+                logo: "🍺",
+                location_vi: "TP.HCM",
+                location_en: "HCM City",
+                target: 40000,
+                raised: 31200,
+                investors: 356,
+                roi: 20.0,
+                status: "active",
+                image: "https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/5/15/1192762/SABECO-4.JPG"
+            },
+            {
+                id: 3,
+                name_vi: "TH True Milk Solar",
+                name_en: "TH True Milk Eco-Farm",
+                company_vi: "TH Group",
+                company_en: "TH Group JSC",
+                logo: "🥛",
+                location_vi: "Nghệ An",
+                location_en: "Nghe An",
+                target: 45000,
+                raised: 27000,
+                investors: 298,
+                roi: 19.5,
+                status: "active",
+                image: "https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/6/28/1210038/Dien-Mat-Troi-Nui-Ti.jpg"
+            }
+        ];
+
+        let INVESTMENTS_HISTORY = [];
+        let USER_PORTFOLIO = {
+            totalSolarTokens: 0,
+            accumulatedYield: 0,
+            yieldPerSecond: 0,
+            lastUpdate: Date.now()
+        };
+
+        let provider, signer, currentAccount, selectedProject;
+
+        function formatNumber(num) { return new Intl.NumberFormat(currentLang === 'vi' ? 'vi-VN' : 'en-US').format(num); }
+
+        function showNotif(msg, type = 'success') {
+            const el = document.getElementById('notification');
+            el.className = `fixed top-24 right-6 px-8 py-5 rounded-[2rem] text-white font-black text-sm shadow-2xl z-[200] animate-up ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+            el.innerHTML = msg;
+            el.classList.remove('hidden');
+            setTimeout(() => el.classList.add('hidden'), 5000);
+        }
+
+        // --- LOADING HELPERS ---
+        function showLoading(text) {
+            const overlay = document.getElementById('globalLoading');
+            const loadingText = document.getElementById('loading-text');
+            loadingText.innerText = text || i18n[currentLang].loadingTx;
+            overlay.classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('globalLoading').classList.remove('active');
+        }
+
+        // --- NAVIGATION FUNCTIONALITY ---
+        function initNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+            const sections = document.querySelectorAll('section[id], div[id="home"]');
+
+            window.addEventListener('scroll', () => {
+                let current = 'home';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (window.pageYOffset >= (sectionTop - 150)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                        closeMobileMenu();
+                    }
+                });
+            });
+        }
+
+        function initMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const closeMobileMenuBtn = document.getElementById('closeMobileMenu');
+            const overlay = document.getElementById('mobileMenuOverlay');
+
+            mobileMenuBtn.addEventListener('click', openMobileMenu);
+            closeMobileMenuBtn.addEventListener('click', closeMobileMenu);
+            overlay.addEventListener('click', closeMobileMenu);
+        }
+
+        function openMobileMenu() {
+            document.getElementById('mobileMenu').classList.add('active');
+            document.getElementById('mobileMenuOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.remove('active');
+            document.getElementById('mobileMenuOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function changeLang(lang) {
+            currentLang = lang;
+            const slider = document.getElementById('langSlider');
+            const viText = document.getElementById('lang-vi');
+            const enText = document.getElementById('lang-en');
+
+            if (lang === 'en') {
+                slider.classList.add('lang-active-en');
+                enText.classList.replace('text-gray-400', 'text-orange-600');
+                viText.classList.replace('text-orange-600', 'text-gray-400');
+            } else {
+                slider.classList.remove('lang-active-en');
+                viText.classList.replace('text-gray-400', 'text-orange-600');
+                enText.classList.replace('text-orange-600', 'text-gray-400');
+            }
+
+            updateStaticText();
+            renderProjects();
+            renderHistory();
+        }
+
+        function updateStaticText() {
+            const t = i18n[currentLang];
+
+            document.getElementById('nav-subtitle').innerText = t.navSubtitle;
+            if(!currentAccount) {
+                document.getElementById('connectWalletText').innerText = t.connectWallet;
+                document.getElementById('connectWalletTextMobile').innerText = t.connectWallet;
+            }
+
+            document.getElementById('nav-home').innerText = t.navHome;
+            document.getElementById('nav-projects').innerText = t.navProjects;
+            document.getElementById('nav-companies').innerText = t.navCompanies;
+            document.getElementById('nav-history').innerText = t.navHistory;
+            document.getElementById('nav-about').innerText = t.navAbout;
+
+            document.getElementById('mobile-nav-home').innerText = t.navHome;
+            document.getElementById('mobile-nav-projects').innerText = t.navProjects;
+            document.getElementById('mobile-nav-companies').innerText = t.navCompanies;
+            document.getElementById('mobile-nav-history').innerText = t.navHistory;
+            document.getElementById('mobile-nav-about').innerText = t.navAbout;
+            document.getElementById('mobile-kyc-btn').innerText = t.heroBtnKYC;
+
+            document.getElementById('hero-tag').innerText = t.heroTag;
+            document.getElementById('hero-title').innerHTML = t.heroTitle;
+            document.getElementById('hero-desc').innerText = t.heroDesc;
+            document.getElementById('hero-btn-start').innerText = t.heroBtnStart;
+            document.getElementById('hero-btn-kyc').innerText = t.heroBtnKYC;
+            document.getElementById('feature-1-text').innerText = t.feature1;
+            document.getElementById('feature-2-text').innerText = t.feature2;
+            document.getElementById('feature-3-text').innerText = t.feature3;
+
+            document.getElementById('live-solar-label').innerText = t.liveSolar;
+            document.getElementById('live-co2-label').innerText = t.liveCO2;
+            document.getElementById('live-price-label').innerText = t.solarPrice;
+
+            document.getElementById('dash-yield-title').innerText = t.dashYield;
+            document.getElementById('dash-token-title').innerText = t.dashToken;
+            document.getElementById('dash-status-title').innerText = t.dashStatus;
+            document.getElementById('factory-status').innerText = t.factoryActive;
+            document.getElementById('factory-eff-label').innerText = t.factoryEff;
+
+            document.getElementById('stat-investors-label').innerText = t.statInvestors;
+            document.getElementById('stat-capacity-label').innerText = t.statCapacity;
+            document.getElementById('stat-raised-label').innerText = t.statRaised;
+            document.getElementById('stat-roi-label').innerText = t.statROI;
+
+            document.getElementById('projects-title').innerText = t.projectsTitle;
+            document.getElementById('projects-subtitle').innerText = t.projectsSubtitle;
+
+            document.getElementById('companies-title').innerText = t.companiesTitle;
+            document.getElementById('companies-subtitle').innerText = t.companiesSubtitle;
+            document.getElementById('company-status-label').innerText = t.companyStatusLabel;
+            document.getElementById('company-project-label').innerText = t.companyProjectLabel;
+            document.getElementById('company-invest-label').innerText = t.companyInvestLabel;
+            document.getElementById('company-co2-label').innerText = t.companyCO2Label;
+            document.getElementById('company-1-status').innerText = t.companyStatus;
+            document.getElementById('company-co2-unit').innerText = t.companyCO2Unit;
+
+            document.getElementById('history-title').innerText = t.historyTitle;
+            document.getElementById('history-badge').innerText = t.historyBadge;
+            document.getElementById('th-time').innerText = t.thTime;
+            document.getElementById('th-project').innerText = t.thProject;
+            document.getElementById('th-amount').innerText = t.thAmount;
+            document.getElementById('th-token').innerText = t.thToken;
+            document.getElementById('th-tx').innerText = t.thTx;
+            if (INVESTMENTS_HISTORY.length === 0) {
+                document.getElementById('history-empty').innerText = t.historyEmpty;
+            }
+
+            document.getElementById('about-title').innerText = t.aboutTitle;
+            document.getElementById('about-desc').innerText = t.aboutDesc;
+            document.getElementById('about-mission-title').innerText = t.aboutMissionTitle;
+            document.getElementById('about-mission-desc').innerText = t.aboutMissionDesc;
+            document.getElementById('about-vision-title').innerText = t.aboutVisionTitle;
+            document.getElementById('about-vision-desc').innerText = t.aboutVisionDesc;
+
+            document.getElementById('modal-title').innerText = t.modalTitle;
+            document.getElementById('modal-amount-label').innerText = t.modalAmount;
+            document.getElementById('approveBtn').innerText = t.approveBtn;
+            document.getElementById('investBtn').innerText = t.investBtn;
+
+            document.getElementById('kyc-modal-title').innerText = t.kycModalTitle;
+            document.getElementById('kyc-name-label').innerText = t.kycName;
+            document.getElementById('kyc-id-label').innerText = t.kycID;
+            document.getElementById('submitKYC').innerText = t.kycSubmit;
+
+            document.getElementById('footer-desc').innerText = t.footerDesc;
+            document.getElementById('footer-copyright').innerText = t.footerCopy;
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            container.innerHTML = '';
+            for (let i = 0; i < 45; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = Math.random() * 6 + 3;
+                p.style.width = `${size}px`;
+                p.style.height = `${size}px`;
+                p.style.left = `${Math.random() * 100}%`;
+                p.style.top = `${Math.random() * 100 + 10}%`;
+                p.style.animationDuration = `${Math.random() * 7 + 8}s`;
+                p.style.animationDelay = `${Math.random() * 5}s`;
+                p.style.opacity = Math.random() * 0.5 + 0.1;
+                if (size > 6) p.style.filter = 'blur(2px)';
+                container.appendChild(p);
+            }
+        }
+
+        function initParallax() {
+            const hero = document.getElementById('home');
+            const layers = document.querySelectorAll('.parallax-layer');
+
+            hero.addEventListener('mousemove', (e) => {
+                const { clientX, clientY } = e;
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+
+                layers.forEach(layer => {
+                    const speed = layer.getAttribute('data-speed');
+                    const x = (centerX - clientX) * speed;
+                    const y = (centerY - clientY) * speed;
+                    layer.style.transform = `translate(${x}px, ${y}px)`;
+                });
+            });
+
+            hero.addEventListener('mouseleave', () => {
+                layers.forEach(layer => {
+                    layer.style.transform = `translate(0, 0)`;
+                });
+            });
+        }
+
+        function startYieldClock() {
+            setInterval(() => {
+                if (USER_PORTFOLIO.yieldPerSecond > 0) {
+                    USER_PORTFOLIO.accumulatedYield += USER_PORTFOLIO.yieldPerSecond;
+                    document.getElementById('liveYield').innerText = USER_PORTFOLIO.accumulatedYield.toFixed(6);
+                    document.getElementById('portfolioDashboard').classList.remove('hidden');
+                }
+            }, 1000);
+        }
+
+        function renderProjects() {
+            const t = i18n[currentLang];
+            const container = document.getElementById('projectsList');
+            container.innerHTML = PROJECTS.map(p => {
+                const progress = Math.min((p.raised / p.target * 100), 100).toFixed(1);
+                const loc = currentLang === 'vi' ? p.location_vi : p.location_en;
+                const name = currentLang === 'vi' ? p.name_vi : p.name_en;
+                const company = currentLang === 'vi' ? p.company_vi : p.company_en;
+
+                return `
+                    <div class="card bg-white rounded-[3rem] overflow-hidden border border-orange-50/50 shadow-sm flex flex-col h-full">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="${p.image}" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110" alt="${name}">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                            <div class="absolute bottom-6 left-8">
+                                <div class="badge bg-orange-500 text-white font-black shadow-xl px-4 py-2 text-xs">${p.roi}% ROI/${currentLang === 'vi' ? 'năm' : 'year'}</div>
+                            </div>
+                            <div class="absolute top-6 left-8">
+                                <div class="w-14 h-14 glass rounded-[1.25rem] flex items-center justify-center text-3xl shadow-2xl border border-white/30">${p.logo}</div>
+                            </div>
+                        </div>
+
+                        <div class="p-10 pt-8 mt-auto">
+                            <h3 class="text-2xl font-[900] text-gray-800 mb-1 leading-tight tracking-tight">${name}</h3>
+                            <p class="text-gray-400 text-[10px] font-black flex items-center gap-1 mb-10 uppercase tracking-[0.2em]">🏢 ${company}</p>
+
+                            <div class="space-y-6 mb-10">
+                                <div class="flex justify-between items-end">
+                                    <span class="text-gray-400 font-black text-[9px] uppercase tracking-widest">${t.raisedLabel}</span>
+                                    <span class="text-2xl font-black text-orange-600 tracking-tighter">${formatNumber(p.raised)} <span class="text-[10px] uppercase ml-1 opacity-50">USDT</span></span>
+                                </div>
+                                <div class="w-full bg-gray-100/80 rounded-full h-3.5 overflow-hidden border-2 border-white shadow-inner">
+                                    <div class="progress-bar bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 h-full rounded-full shadow-lg" style="width: ${progress}%"></div>
+                                </div>
+                                <div class="flex justify-between text-[10px] font-black uppercase tracking-widest text-orange-600/80">
+                                    <span>${progress}% ${t.completedLabel}</span>
+                                    <span class="text-gray-300">${t.targetLabel}: ${formatNumber(p.target)}</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-8 border-t border-gray-50 mb-10">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl">👥</span>
+                                    <span class="font-black text-gray-700 text-xl tracking-tighter">${formatNumber(p.investors)} <span class="text-gray-300 text-xs ml-1 font-bold">${t.statInvestors}</span></span>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[9px] font-black text-gray-300 uppercase tracking-widest mb-1">${t.locationLabel}</p>
+                                    <p class="text-xs font-black text-gray-600">${loc}</p>
+                                </div>
+                            </div>
+
+                            <button onclick="openInvestModal(${p.id})" class="w-full py-6 rounded-[2rem] font-black text-white bg-gray-900 shadow-2xl hover:bg-orange-600 transition-all hover:-translate-y-1 active:scale-95 text-xs uppercase tracking-widest">
+                                ${t.investNow}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('statInvestors').innerText = formatNumber(PROJECTS.reduce((a, b) => a + b.investors, 0));
+            document.getElementById('statTotalRaised').innerText = formatNumber(Math.floor(PROJECTS.reduce((a, b) => a + b.raised, 0) / 1000)) + "k";
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('transactionHistory');
+            const t = i18n[currentLang];
+            if (INVESTMENTS_HISTORY.length === 0) {
+                container.innerHTML = `<tr><td colspan="5" class="py-14 text-center text-gray-300 font-black uppercase tracking-[0.2em] italic text-[10px] opacity-60">${t.historyEmpty}</td></tr>`;
+                return;
+            }
+            container.innerHTML = INVESTMENTS_HISTORY.map(h => `
+                <tr class="text-xs font-bold border-b border-gray-50 hover:bg-orange-50/30 transition-colors">
+                    <td class="py-8 px-4 text-gray-400">${h.date}</td>
+                    <td class="py-8 px-4 text-gray-800 font-black">${h.projectName}</td>
+                    <td class="py-8 px-4 text-orange-600 font-[900]">+${formatNumber(h.amount)} USDT</td>
+                    <td class="py-8 px-4 text-green-600 font-black">${h.tokens} SOLAR</td>
+                    <td class="py-8 px-4">
+                        <a href="${CONFIG.explorer}/tx/${h.txHash}" target="_blank" class="px-4 py-2 bg-gray-50 text-[10px] font-mono text-blue-500 rounded-xl hover:bg-blue-50 transition border border-blue-100/50">
+                            ${h.txHash.slice(0, 10)}...${h.txHash.slice(-4)} ↗
+                        </a>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function connectWallet() {
+            const t = i18n[currentLang];
+            if (typeof window.ethereum === 'undefined') return showNotif(currentLang === 'vi' ? 'Hãy cài đặt MetaMask!' : 'Please install MetaMask!', 'error');
+
+            showLoading(t.loadingVerify);
+            try {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                const accounts = await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+                currentAccount = accounts[0];
+
+                const btn = document.getElementById('connectWallet');
+                btn.innerHTML = `<span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse border border-green-200"></span> ${currentAccount.slice(0, 6)}...${currentAccount.slice(-4)}`;
+                btn.classList.replace('bg-gradient-to-r', 'bg-orange-50');
+                btn.classList.add('text-orange-700', 'border-orange-200', 'shadow-inner');
+
+                const btnMobile = document.getElementById('connectWalletMobile');
+                btnMobile.innerHTML = `<span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse border border-green-200"></span> ${currentAccount.slice(0, 6)}...${currentAccount.slice(-4)}`;
+                btnMobile.classList.replace('bg-gradient-to-r', 'bg-orange-50');
+                btnMobile.classList.add('text-orange-700', 'border-orange-200');
+
+                showNotif(t.notifConnect, 'success');
+                startYieldClock();
+                checkKYCStatus();
+            } catch (e) {
+                showNotif(currentLang === 'vi' ? 'Kết nối thất bại!' : 'Connection failed!', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function checkKYCStatus() {
+            try {
+                const contract = new ethers.Contract(CONFIG.contracts.investment, INVESTMENT_ABI, signer);
+                const isApproved = await contract.kycApproved(currentAccount);
+                if (isApproved) document.getElementById('kycStatus').classList.remove('hidden');
+            } catch (e) { console.error(e); }
+        }
+
+        function openInvestModal(id) {
+            const t = i18n[currentLang];
+            if (!currentAccount) return showNotif(currentLang === 'vi' ? "Hãy kết nối ví trước!" : "Connect wallet first!", "error");
+            selectedProject = PROJECTS.find(p => p.id === id);
+
+            const name = currentLang === 'vi' ? selectedProject.name_vi : selectedProject.name_en;
+
+            document.getElementById('modalProjectCard').innerHTML = `
+                <div class="flex items-center gap-6">
+                    <div class="text-5xl drop-shadow-lg">${selectedProject.logo}</div>
+                    <div>
+                        <p class="text-2xl font-[900] text-gray-800 tracking-tighter leading-tight">${name}</p>
+                        <p class="text-[10px] font-black text-orange-500 uppercase tracking-widest mt-1 opacity-70">${t.roiTarget} ${selectedProject.roi}%</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('investModal').classList.remove('hidden');
+        }
+
+        function closeInvestModal() {
+            document.getElementById('investModal').classList.add('hidden');
+            const t = i18n[currentLang];
+            document.getElementById('approveBtn').disabled = false;
+            document.getElementById('approveBtn').innerText = t.approveBtn;
+            document.getElementById('approveBtn').classList.replace('bg-green-500', 'bg-yellow-500');
+            document.getElementById('investBtn').disabled = true;
+        }
+
+        document.getElementById('approveBtn').addEventListener('click', async () => {
+            const t = i18n[currentLang];
+            const btn = document.getElementById('approveBtn');
+
+            showLoading(t.loadingTx);
+            try {
+                const contract = new ethers.Contract(CONFIG.contracts.usdt, ERC20_ABI, signer);
+                const tx = await contract.approve(CONFIG.contracts.investment, ethers.utils.parseUnits("1000000", 6));
+                await tx.wait();
+
+                btn.innerText = t.approvedState;
+                btn.classList.replace('bg-yellow-500', 'bg-green-500');
+                btn.disabled = true;
+                document.getElementById('investBtn').disabled = false;
+                showNotif(t.notifApprove, 'success');
+            } catch (e) {
+                showNotif('Error: ' + (e.reason || 'User rejected'), 'error');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        // --- FIXED INVEST LOGIC TO SHOW REAL BLOCK DATA ---
+        document.getElementById('investBtn').addEventListener('click', async () => {
+            const t = i18n[currentLang];
+            const amountVal = parseFloat(document.getElementById('investAmount').value);
+
+            showLoading(t.loadingTx);
+            try {
+                // 1. Thực hiện gọi Smart Contract thật
+                const investmentContract = new ethers.Contract(CONFIG.contracts.investment, INVESTMENT_ABI, signer);
+                const tx = await investmentContract.invest(selectedProject.id, ethers.utils.parseUnits(amountVal.toString(), 6));
+
+                showLoading(t.loadingTx + " (Waiting for confirmation...)");
+
+                // 2. Chờ giao dịch được đưa vào Block
+                const receipt = await tx.wait();
+
+                // 3. Lấy mã hash thực tế từ biên lai giao dịch
+                const txHash = receipt.transactionHash;
+
+                const pIdx = PROJECTS.findIndex(p => p.id === selectedProject.id);
+                if (pIdx !== -1) {
+                    PROJECTS[pIdx].raised += amountVal;
+                    PROJECTS[pIdx].investors += 1;
+                }
+
+                const tokensEarned = amountVal * 2;
+                USER_PORTFOLIO.totalSolarTokens += tokensEarned;
+
+                const yearlyProfit = amountVal * (selectedProject.roi / 100);
+                const incrementalYieldPerSec = yearlyProfit / (365 * 24 * 3600);
+                USER_PORTFOLIO.yieldPerSecond += incrementalYieldPerSec;
+
+                document.getElementById('totalSolarTokens').innerText = USER_PORTFOLIO.totalSolarTokens.toFixed(2);
+
+                // 4. Lưu lại thông tin với mã Hash thật để link tới Block Explorer hoạt động
+                INVESTMENTS_HISTORY.unshift({
+                    date: new Date().toLocaleString(currentLang === 'vi' ? 'vi-VN' : 'en-US'),
+                    projectName: currentLang === 'vi' ? selectedProject.name_vi : selectedProject.name_en,
+                    amount: amountVal,
+                    tokens: tokensEarned,
+                    txHash: txHash
+                });
+
+                showNotif(t.notifInvest.replace('{amount}', amountVal), 'success');
+                closeInvestModal();
+                renderProjects();
+                renderHistory();
+
+            } catch (e) {
+                console.error("Giao dịch thất bại:", e);
+                showNotif(t.notifFail + " (" + (e.reason || "User rejected") + ")", 'error');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        function openKYCModal() { document.getElementById('kycModal').classList.remove('hidden'); }
+        function closeKYCModal() { document.getElementById('kycModal').classList.add('hidden'); }
+
+        document.getElementById('submitKYC').addEventListener('click', async () => {
+            const t = i18n[currentLang];
+            if (!currentAccount) return showNotif(currentLang === 'vi' ? "Hãy kết nối ví!" : "Connect wallet!", "error");
+
+            showLoading(t.loadingVerify);
+            try {
+                const contract = new ethers.Contract(CONFIG.contracts.investment, INVESTMENT_ABI, signer);
+                const tx = await contract.approveKYC(currentAccount);
+                await tx.wait();
+                showNotif(t.notifKYC, 'success');
+                document.getElementById('kycStatus').classList.remove('hidden');
+                closeKYCModal();
+            } catch (e) {
+                showNotif("Error: " + (e.reason || "Verification failed"), "error");
+            } finally {
+                hideLoading();
+            }
+        });
+
+        async function checkConnection() {
+            if (window.ethereum) {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                const accounts = await provider.listAccounts();
+                if (accounts.length > 0) {
+                    signer = provider.getSigner();
+                    currentAccount = accounts[0];
+
+                    const btn = document.getElementById('connectWallet');
+                    btn.innerHTML = `<span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse border border-green-200"></span> ${currentAccount.slice(0, 6)}...${currentAccount.slice(-4)}`;
+                    btn.classList.replace('bg-gradient-to-r', 'bg-orange-50');
+                    btn.classList.add('text-orange-700', 'border-orange-200', 'shadow-inner');
+
+                    const btnMobile = document.getElementById('connectWalletMobile');
+                    btnMobile.innerHTML = `<span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse border border-green-200"></span> ${currentAccount.slice(0, 6)}...${currentAccount.slice(-4)}`;
+                    btnMobile.classList.replace('bg-gradient-to-r', 'bg-orange-50');
+                    btnMobile.classList.add('text-orange-700', 'border-orange-200');
+
+                    startYieldClock();
+                    checkKYCStatus();
+                }
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            initParallax();
+            initNavigation();
+            initMobileMenu();
+            changeLang('vi');
+            checkConnection();
+            document.getElementById('connectWallet').addEventListener('click', connectWallet);
+            document.getElementById('connectWalletMobile').addEventListener('click', connectWallet);
+
+            // Banner live numbers effect
+            setInterval(() => {
+                const solar = document.getElementById('live-solar-power');
+                if(solar) {
+                    const currentSolar = parseInt(solar.innerText);
+                    solar.innerText = (currentSolar + (Math.random() > 0.5 ? 1 : -1)).toString();
+                }
+                const co2 = document.getElementById('live-co2-saved');
+                if(co2) {
+                    const currentCo2 = parseFloat(co2.innerText.replace(',', ''));
+                    co2.innerText = (currentCo2 + 0.001).toLocaleString(undefined, {minimumFractionDigits: 3});
+                }
+            }, 3000);
+        });
+
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length > 0) {
+                    currentAccount = accounts[0];
+                    checkConnection();
+                } else {
+                    window.location.reload();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

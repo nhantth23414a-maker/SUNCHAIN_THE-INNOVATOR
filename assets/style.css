@@ -1,0 +1,94 @@
+/* Header styles */
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-left h1 {
+    margin: 0;
+    color: #00447C;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* Sub-header styles */
+.subheader-left {
+    display: flex;
+    align-items: center;
+}
+
+.subheader-left h2 {
+    margin: 0;
+    color: #00447C;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.subheader-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.subheader-right p {
+    margin: 0;
+    color: #333333;
+    font-size: 14px;
+}
+
+/* Navigation button styles */
+div[data-testid="stVerticalBlock"] > div:has(> div[data-testid="stButton"]) {
+    display: flex;
+    gap: 10px;
+}
+
+button[data-testid="baseButton-secondary"] {
+    background-color: #FFFFFF;
+    color: #00447C;
+    border: 1px solid #00447C;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-weight: 600;
+}
+
+button[data-testid="baseButton-secondary"]:hover {
+    background-color: #D4E6F1;
+}
+
+button[data-testid="baseButton-secondary"]:active {
+    background-color: #00447C;
+    color: #FFFFFF;
+}
+
+/* KPI Card styles */
+.kpi-card {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.kpi-title {
+    color: #333333;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.kpi-value {
+    color: #00447C;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Chart container styles */
+div[data-testid="stVerticalBlock"] > div:has(> div[data-testid="stPlotlyChart"]) {
+    margin-bottom: 20px;
+}
+
+/* Download button styles */
+button[data-testid="baseButton-secondary"]:last-child {
+    margin-top: 10px;
+    width: 100%;
+}

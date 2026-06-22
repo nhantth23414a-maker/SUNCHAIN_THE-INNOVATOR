@@ -1,0 +1,30 @@
+await tx.wait();
+const tx = await investment.approveKYC("0xF8d1AFF84299F7bA7Ee1a49f59ac30104d1f2439", { gasLimit: 200000 });
+const investment = await ethers.getContractAt("SunChainInvestment", "0x1939fe6280a0afDe2B38c79d80f3A352F737bf8F");
+console.log("Active:", p3.isActive);
+console.log("Raised:", ethers.formatUnits(p3.raisedAmount, 6), "USDT");
+console.log("Target:", ethers.formatUnits(p3.targetAmount, 6), "USDT");
+console.log("Name:", p3.name);
+console.log("\nProject #3:");
+const p3 = await investment.getProject(3);
+console.log("Total projects:", count.toString());
+const count = await investment.projectCount();
+const investment = await ethers.getContractAt("SunChainInvestment", "ĐỊA_CHỈ_CONTRACT_MỚI_CỦA_BẠN");
+  console.log("Error:", e.message);
+  console.log("  Funded:", p.isFunded);
+  console.log("  Active:", p.isActive);
+  console.log("  Raised:", ethers.formatUnits(p.raisedAmount, 6), "USDT");
+  console.log("  Target:", ethers.formatUnits(p.targetAmount, 6), "USDT");
+  console.log("  Name:", p.name);
+  console.log("Project #2:");
+// Xem chi tiết project #2
+const investment = await ethers.getContractAt("SunChainInvestment", "0xe122315A4A05b87ad62Ab0a0c6170a9FAA672909");
+await investment.activateProject(2)
+const investment = await ethers.getContractAt("SunChainInvestment", "0xe122315A4A05b87ad62Ab0a0c6170a9FAA672909")
+npx hardhat run scripts/activate_all_projects.js --network sepolia
+npx hardhat console --network sepolia
+console.log("Project 2:", p2.name, "Active:", p2.isActive)
+const p2 = await investment.getProject(2)
+console.log("Project 1:", p1.name, "Active:", p1.isActive)
+const p1 = await investment.getProject(1)
+const investment = await ethers.getContractAt("SunChainInvestment", "0xe122315A4A05b87ad62Ab0a0c6170a9FAA672909")
