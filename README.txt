@@ -1,7 +1,12 @@
 ☀️ SunChain - Solar Energy Tokenization Platform
 
 SunChain là nền tảng Web3 RWA (Real World Assets) cho phép token hóa năng lượng mặt trời. Nhà đầu tư sử dụng USDT để đầu tư vào các dự án điện mặt trời thực tế và nhận lại SolarToken (SOLAR) đại diện cho sản lượng điện và lợi nhuận.
+Danh sách sinh viên thực hiện:
 
+Phan Đặng Anh Kiệt - K234141653
+Trần Thị Hoài Nhân - K234141662
+Cao Huỳnh Tuyết Trân - K234141684
+✨ Tính năng nổi bật
 📂 1. Cấu trúc thư mục bắt buộc
 
 QUAN TRỌNG: Backend Flask yêu cầu các file HTML phải nằm trong thư mục templates. Hãy sắp xếp file như sau:
